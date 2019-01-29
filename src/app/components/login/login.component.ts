@@ -1,33 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/models/mainState.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styles: []
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  hasError = false;
-  errorText: string;
+  cargando: boolean;
+  // subcription para manejar fugas de memoria.
+  subscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, public store: Store<AppState>) { }
 
   ngOnInit() {
+    this.subscription = this.store.select('ui').subscribe( ui => this.cargando = ui.isLoading);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSubmit(data: any) {
-    this.authService.login(data.email, data.password)
-      .then( () => this.router.navigate(['/']))
-      .catch(error => {
-        this.hasError = true;
-        this.errorText = error.message;
-      });
-  }
-
-  closeModal() {
-    this.hasError = false;
+    this.authService.login(data.email, data.password);
   }
 
 }

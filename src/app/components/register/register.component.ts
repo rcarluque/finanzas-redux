@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/models/mainState.model';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,9 +10,12 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(public authService: AuthService, private router: Router) { }
+  cargando: boolean;
+
+  constructor(public authService: AuthService, public store: Store<AppState>) { }
 
   ngOnInit() {
+    this.store.select('ui').subscribe( ui => this.cargando = ui.isLoading);
   }
 
   onSubmit(data: any) {

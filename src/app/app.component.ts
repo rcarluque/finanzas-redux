@@ -14,4 +14,8 @@ export class AppComponent implements OnInit {
     this.authService.initAuthListener();
   }
 
+  // closeModal() {
+  //   this.hasError = false;
+  // }
+
 }
