@@ -51,6 +51,9 @@ export class AuthService {
     });
   }
 
+  /**
+   * Comprueba si el usuario está autenticado.
+   */
   isAuth() {
     return this.afAuth.authState.pipe(
       map( fbUser => {
@@ -78,20 +81,29 @@ export class AuthService {
           .set(user)
           .then( () => {
             this.router.navigate(['/']);
+            this.store.dispatch(this.userActions.unSetError());
             this.store.dispatch(this.uiActions.desctivarLoading());
           });
       })
-      .catch( error => this.store.dispatch(this.uiActions.desctivarLoading()) );
+      .catch( error => {
+        this.store.dispatch(this.userActions.setError(error.message));
+        this.store.dispatch(this.uiActions.desctivarLoading());
+      });
   }
 
   login(email: string, password: string) {
     this.store.dispatch(this.uiActions.activarLoading());
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    // serv
+    this.afAuth.auth.signInWithEmailAndPassword(email, password)
         .then( () => {
           this.router.navigate(['/']);
+          this.store.dispatch(this.userActions.unSetError());
           this.store.dispatch(this.uiActions.desctivarLoading());
         })
-        .catch( () => this.store.dispatch(this.uiActions.desctivarLoading()) );
+        .catch( error => {
+          this.store.dispatch(this.userActions.setError(error.message));
+          this.store.dispatch(this.uiActions.desctivarLoading());
+        });
   }
 
   logout() {

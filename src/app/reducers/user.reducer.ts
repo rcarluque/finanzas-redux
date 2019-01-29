@@ -4,7 +4,9 @@ import { UserState } from '../models/user.model';
 
 const UserInitialState: UserState = {
   data: null,
-  error: false
+  error: {
+    hasError: false
+  }
 };
 
 export function userReducer(state: UserState = UserInitialState, action: Action) {
@@ -13,6 +15,21 @@ export function userReducer(state: UserState = UserInitialState, action: Action)
       return {
         ...state,
         data: action.payload
+      };
+    case userActions.SET_ERROR:
+      return {
+        ...state,
+        error: {
+          hasError: true,
+          texto: action.payload
+        }
+      };
+    case userActions.UN_SET_ERROR:
+      return {
+        ...state,
+        error: {
+          hasError: false
+        }
       };
     default:
       return state;

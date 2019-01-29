@@ -1,3 +1,5 @@
+import { AlertError } from './alert.model';
+
 export interface User {
   nombre: string;
   email: string;
@@ -6,7 +8,7 @@ export interface User {
 
 export interface UserState {
   data: User;
-  error: boolean;
+  error: AlertError;
 }
 
 // export class UserStore {
