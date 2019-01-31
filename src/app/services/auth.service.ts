@@ -19,6 +19,8 @@ import { Subscription } from 'rxjs';
 })
 export class AuthService {
 
+  private usuario: User;
+
   private userSubcription: Subscription = new Subscription();
 
   constructor(private afAuth: AngularFireAuth,
@@ -44,11 +46,24 @@ export class AuthService {
           };
 
           this.store.dispatch(this.userActions.setUser(newUser));
+          this.usuario = newUser;
         });
       } else {
+        this.usuario = null;
         this.userSubcription.unsubscribe();
       }
     });
+  }
+
+  /**
+   * En caso de que usuario fuese un Objeto (clase)
+   * Tenemos que extraer todos los valores que usuario,
+   * pero para enviar solo las propiedades de este.
+   * (Código comentado).
+   */
+  getUsuario() {
+    // return {...this.usuario};
+    return this.usuario;
   }
 
   /**
@@ -107,6 +122,7 @@ export class AuthService {
   }
 
   logout() {
+    this.store.dispatch(this.userActions.unsetUser());
     return this.afAuth.auth.signOut();
   }
 

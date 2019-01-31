@@ -7,20 +7,29 @@
           <thead>
             <tr>
               <th>Descripción</th>
-              <th>Monto</th>
+              <th>Cantidad</th>
               <th>Tipo</th>
               <th></th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>Descripción</td>
-              <td>Monto</td>
-              <td>Tipo</td>
-              <td>acciones</td>
+            <tr *ngFor="let item of items | ordenIngresoEgreso">
+              <td>{{item.descripcion}}</td>
+              <td>{{item.cantidad}}</td>
+              <td>
+                <span class="font-weight-bold" [ngClass]="{'text-success': item.tipo, 'text-danger': !item.tipo}">
+                  {{item.tipo ? 'Ingreso' : 'Gasto'}}
+                </span>
+              </td>
+              <td>
+                <button (click)="borrarItem(item.uid)" class="btn btn-danger btn-sm">
+                  <i class="fa fa-trash fa-sm"></i>
+                  Borrar
+                </button>
+              </td>
             </tr>
-          </tbody>
+          </tbody> 
         </table>
       </div>
     </div>

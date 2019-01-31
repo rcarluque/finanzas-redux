@@ -8,6 +8,11 @@ export const getUser = createSelector(getMainState, (state: AppState) => {
   return state.usuario;
 });
 
+export const getUserData = createSelector(
+  getUser,
+  (user: UserState) => user.data
+);
+
 export const getError = createSelector(
   getUser,
   (user: UserState) => user.error

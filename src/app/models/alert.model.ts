@@ -1,4 +1,4 @@
-export interface AlertError {
-  hasError: boolean;
+export interface Alert {
+  showAlert?: boolean;
   texto?: string;
 }

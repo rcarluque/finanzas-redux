@@ -1,4 +1,4 @@
-import { AlertError } from './alert.model';
+import { Alert } from './alert.model';
 
 export interface User {
   nombre: string;
@@ -8,7 +8,7 @@ export interface User {
 
 export interface UserState {
   data: User;
-  error: AlertError;
+  error: Alert;
 }
 
 // export class UserStore {
